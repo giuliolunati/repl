@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>REPL</title>
+  <style>
+  </style>
+  <script type=text/javascript>
+  	onerror= function (message, file, line) {
+    	alert(message + '[riga ' + line + ' in ' + file);
+    }
+  </script>
+  <script type=text/javascript>
+  	buf= ""
+  	init= function () {
+    	output= document.getElementById("output");
+      repl();
+    }
+    repl= function () {
+    	if (buf) {
+        show(buf);
+        buf= ""
+      }
+      setTimeout(repl, 100);
+    }
+  	put= function (text) {
+    	buf= text;
+    }
+    show= function (text) {
+    	output.innerText += text + "\n";
+    }
+  </script>
+</head>
+<body onload="init()">
+<div id="output"></div>
+<div><input id="input" type="text" onkeyup="
+if (event.key == 'Enter') {put(this.value); this.value=''}"/></div>
+</body>
+</html>
+<!-- vim: set sw=2 ts=2 sts=2: -->
