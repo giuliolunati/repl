@@ -7,28 +7,28 @@
   <style>
   </style>
   <script type=text/javascript>
-  	onerror= function (message, file, line) {
-    	alert(message + '[riga ' + line + ' in ' + file);
+    onerror= function (message, file, line) {
+      alert(message + '[riga ' + line + ' in ' + file);
     }
   </script>
   <script type=text/javascript>
-  	buf= ""
-  	init= function () {
-    	output= document.getElementById("output");
-      repl();
-    }
-    repl= function () {
-    	if (buf) {
-        show(buf);
-        buf= ""
+    if (window.Worker) {
+      myWorker= new Worker("worker.js");
+      myWorker.onmessage= function (e) {
+        if (e.data[0] == 'show') {
+          show(e.data[1]);
+        } else {alert(e.data)}
       }
-      setTimeout(repl, 100);
     }
-  	put= function (text) {
-    	buf= text;
+    init= function () {
+      output= document.getElementById("output");
+      myWorker.postMessage(["repl"]);
+    }
+    put= function (text) {
+      myWorker.postMessage(['put', text]); 
     }
     show= function (text) {
-    	output.innerText += text + "\n";
+      output.innerText += text + "\n";
     }
   </script>
 </head>
